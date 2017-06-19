@@ -1,0 +1,35 @@
+﻿<div class="panel panel-default" *ngIf="alwaysShow || showId">
+    
+    <div class="panel-heading">
+       {{task.id ? 'Edit' : 'Add'}} a task
+    </div> 
+     
+    <div class="panel-body">
+
+        <form>
+
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text"  [(ngModel)]="task.name" name="name" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea [(ngModel)]="task.description" name="description" class="form-control"></textarea>
+            </div>
+
+            <button class="btn btn-default"  (click)="addTask(task)">Add</button>
+
+            <button class="btn btn-default" (click)="cancel()">Cancel</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div *ngIf="false">My NgIf Div</div>
+<div [hidden]="true">My Hidden Div</div>
+
+       
+ 

@@ -1,0 +1,54 @@
+﻿
+
+
+
+<div class="row">
+    <div class="col-md-12">
+
+        
+         
+        <table class="table table-striped">
+
+            <thead>
+                <tr>
+                   <th></th>
+                    <th>Status</th>
+                    <th>ID</th>
+                    
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+           
+            <tbody *ngFor="let task of currTask | filterLs:currString">
+                <tr>
+                    <td *ngIf="task.done"><input type="checkbox" checked disabled /></td>
+                    <td *ngIf="!task.done"><input type="checkbox" (click)="markDone(task)" /></td>
+                    <td *ngIf="task.done">Completed</td>
+                    <td *ngIf="!task.done">In Progress</td>
+                    <td>{{task.id}}</td>
+                    <td>{{task.name}}</td>
+                    <td>{{task.description}}</td> 
+                    <td>
+                        <button type="button" class="btn"  (click)="deleteTask(task.id)">
+                            <span class="glyphicon glyphicon-remove"  aria-hidden="true"></span>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn" (click)="task.editMode = !task.editMode" [disabled]="task.done">
+                            <span class="glyphicon glyphicon-edit"  aria-hidden="true"></span>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="task.editMode">
+                    <td colspan="8">
+                        <tda-add-task [task]="task" [alwaysShow]="true"></tda-add-task>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+   
