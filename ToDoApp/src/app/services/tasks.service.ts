@@ -18,6 +18,18 @@ export class TasksService implements TasksServiceInterface {
 
     constructor(private http: Http) { }
 
+    // observable for the router-outlet
+    //private _taskForRoute: Subject<SingleTask> = new Subject();
+    //private _taskForRouteObservable: Observable<SingleTask> = this._taskForRoute.asObservable();
+
+    //public changeTaskRoute(task: SingleTask) {
+    //    this._taskForRoute.next(task);
+    //}
+
+    //public getTaskRoute(): Observable<SingleTask> {
+    //    return this._taskForRouteObservable;        
+    //}
+
     // fields for the observable search component string
     private _searchString: BehaviorSubject<string> = new BehaviorSubject('');
     private _searchStringObservable: Observable<string> = this._searchString.asObservable();

@@ -14,6 +14,7 @@ export interface TasksServiceInterface{
     readonly showAddTaskForm: Observable<boolean>;
     deleteTask(taskId: number): Observable<Response>;
     markDone(taskId: number): Observable<Response>;
+   
 } 
 
  

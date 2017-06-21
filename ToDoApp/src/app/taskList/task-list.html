@@ -13,8 +13,7 @@
                 <tr>
                    <th></th>
                     <th>Status</th>
-                    <th>ID</th>
-                    
+                    <th>ID</th>                    
                     <th>Name</th>
                     <th>Description</th>
                     <th>Delete</th>
@@ -37,16 +36,14 @@
                         </button>
                     </td>
                     <td>
-                        <button type="button" class="btn" (click)="task.editMode = !task.editMode" [disabled]="task.done">
+                        <button type="button" class="btn" routerLink="/edit"
+                           [replaceUrl]="false"
+                           [queryParams]="{ id: task.id }" routerLinkActive="active" queryParamsHandling (click)="task.editMode = !task.editMode" [disabled]="task.done">
                             <span class="glyphicon glyphicon-edit"  aria-hidden="true"></span>
                         </button>
                     </td>
                 </tr>
-                <tr *ngIf="task.editMode">
-                    <td colspan="8">
-                        <tda-add-task [task]="task" [alwaysShow]="true"></tda-add-task>
-                    </td>
-                </tr>
+                
             </tbody>
         </table>
     </div>

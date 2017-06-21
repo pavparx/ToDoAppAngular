@@ -17,9 +17,10 @@ export class TaskListComponent implements OnInit {
 
     
     
-    taskId: number;
+    
     private currTask: SingleTask[]=[];
     private currString: string;
+    private currentTask: SingleTask;
 
     constructor(@Inject('TasksServiceInterface') private tasksService: TasksServiceInterface) {}
 
@@ -32,6 +33,7 @@ export class TaskListComponent implements OnInit {
         });
 
         this.tasksService.getSearchString.subscribe(data => this.currString = data);
+        
         
     }
     

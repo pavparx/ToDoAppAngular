@@ -7,7 +7,7 @@ export class FilterLsPipe implements PipeTransform {
     transform(tasks: SingleTask[], keyword: string): SingleTask[] {
 
         let results: SingleTask[] = [];
-        console.log(tasks);
+        
 
         for (let i = 0; i < tasks.length; i++) {
 
