@@ -20,8 +20,17 @@ namespace ToDoApp.Web_API.Controllers
         [Route]
         public void AddTask(SingleTask task)
         {
-
-            tasks.Add(task);
+            
+            if (tasks.Count==0)
+            {
+                task.Id = 1;
+                tasks.Add(task);
+            }else
+            {
+                task.Id = tasks.Count + 1;
+                tasks.Add(task);
+            }
+            
 
 
         }

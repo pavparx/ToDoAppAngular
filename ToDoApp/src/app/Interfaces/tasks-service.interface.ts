@@ -3,18 +3,15 @@ import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
 
 export interface TasksServiceInterface{ 
-    
-    addTask(task: SingleTask): Observable<Response>;
-    getTasksAsync(): Observable<SingleTask[]>;
-    updateTasks(): void;
-    readonly getTasks: Observable<SingleTask[]>;
-    changeVisibility(): void;
-    searchString(keyword: string): void;
-    readonly getSearchString: Observable<string>;
-    readonly showAddTaskForm: Observable<boolean>;
+    updateTasksObservable(): void;
+    readonly getTasksObservable: Observable<SingleTask[]>;
+    changeVisibilityOfAddTask(): void;
+    readonly getVisibilityOfAddTask: Observable<boolean>;
+    searchTaskObservable(keyword: string): void;
+    readonly getSearchTaskObservable: Observable<string>;    
     deleteTask(taskId: number): Observable<Response>;
-    markDone(taskId: number): Observable<Response>;
-   
+    markTaskDone(taskId: number): Observable<Response>;
+    addTask(task: SingleTask): Observable<Response>;
 } 
 
  

@@ -1,6 +1,5 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes, Router } from '@angular/router';
-
 import { AddTaskComponent } from './addTask/add-task.component';
 
 const appRoutes: Routes = [

@@ -4,7 +4,6 @@ import { SingleTask } from '../models/single-task.model';
 import { TasksServiceInterface } from '../interfaces/tasks-service.interface';
 import { TasksService } from '../services/tasks.service';
 import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';
-import { DOCUMENT } from '@angular/platform-browser';
 import { QueryStringHelperService } from '../services/query-string-helper.service';
 import { Location } from '@angular/common';
 
@@ -13,9 +12,7 @@ import { Location } from '@angular/common';
     selector: 'tda-add-task',
     templateUrl: 'add-task.html'
 })
-export class AddTaskComponent  {
-    
-    urlResults: any = {}; 
+export class AddTaskComponent {
 
     @Input()
     task: SingleTask;
@@ -23,72 +20,44 @@ export class AddTaskComponent  {
     @Input()
     alwaysShow: boolean;
 
-
-    private currTaskId: number = 0;
+    private currentTasks: SingleTask[];
     private showId: boolean;
-     
-    
+    urlResults: any = {};
 
+    constructor(
+        @Inject('TasksServiceInterface') private tasksService: TasksServiceInterface,
+        private queryStringHelperService: QueryStringHelperService) {
+        if (!this.task) { this.task = new SingleTask;}
+        this.tasksService.getTasksObservable.subscribe((res) => this.currentTasks = res);
+        this.tasksService.getVisibilityOfAddTask.subscribe((res) => { this.showId = res; });
+        this.urlResults = this.queryStringHelperService.getQueryStringParams();
 
-    constructor( @Inject('TasksServiceInterface') private tasksService: TasksServiceInterface, private queryStringHelperService: QueryStringHelperService) {
-        
-        this.queryStringHelperService.subscribe((params: any) => {
-            for (var key in params) {
-                this.urlResults[key] = params[key];
-               
-                this.tasksService.getTasksAsync().subscribe((res) =>
-                {
-                    for (let i in res) {
-                        if (this.urlResults[key] == res[i].id) {
-                            this.task = res[i];
-                            break;
-                        } else {
-                            console.log("not found");
-                        }
-                    }
-                })                
-            }
-        }); 
-
-        //this.urlResults = this.queryStringHelperService.getQueryStringParams();
-        
-        console.log("ulrResults : "+this.urlResults['id']);
-         
-            this.task = this.task || new SingleTask();           
-            this.tasksService.showAddTaskForm.subscribe((res) => { this.showId = res; });
-
+        if (this.urlResults) {
+            if (!this.showId) { this.tasksService.changeVisibilityOfAddTask(); }
             
-
+                for (var key in this.urlResults) {
+                    for (let taskItem of this.currentTasks) {
+                        if (taskItem.id === this.urlResults[key]) {
+                        this.task = taskItem;
+                        break;
+                    }
+                }
+            }
+        } else {
+            this.task = new SingleTask;
         }
-        
-        
-        
+    }
     
-
-    // get the data from the view and send them to the service
-
-    addTask(task: SingleTask) {
-        
+        addTask(task: SingleTask) {
             task.done = false;
-            this.currTaskId++;
-            task.id = this.currTaskId;
             this.tasksService.addTask(task).subscribe(() => {
-                this.tasksService.updateTasks();
+                this.tasksService.updateTasksObservable();
                 this.task = new SingleTask();
             });
-        
-             
         }
-          
-    
 
-
-    cancel() {
-        this.task = new SingleTask();
-        this.tasksService.changeVisibility();
-
+        cancel() {
+            this.task = new SingleTask();
+            this.tasksService.changeVisibilityOfAddTask();
+        }
     }
-
-    
-
-}

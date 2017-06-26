@@ -6,39 +6,33 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-
-
 import { Observable } from 'rxjs/Observable';
-
 
 @Injectable()
 export class TasksService implements TasksServiceInterface {
 
-    private currentId: number;
-
     constructor(private http: Http) { }
 
-    // observable for the router-outlet
-    //private _taskForRoute: Subject<SingleTask> = new Subject();
-    //private _taskForRouteObservable: Observable<SingleTask> = this._taskForRoute.asObservable();
+    private _showAddTaskForm: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    private _showAddTaskFormObservable: Observable<boolean> = this._showAddTaskForm.asObservable();
 
-    //public changeTaskRoute(task: SingleTask) {
-    //    this._taskForRoute.next(task);
-    //}
+    public changeVisibilityOfAddTask() {
 
-    //public getTaskRoute(): Observable<SingleTask> {
-    //    return this._taskForRouteObservable;        
-    //}
+        this._showAddTaskForm.next(!this._showAddTaskForm.value);
+    }
 
-    // fields for the observable search component string
+    get getVisibilityOfAddTask() {
+        return this._showAddTaskFormObservable;
+    }
+    
     private _searchString: BehaviorSubject<string> = new BehaviorSubject('');
     private _searchStringObservable: Observable<string> = this._searchString.asObservable();
 
-    public searchString(keyword: string) {
+    public searchTaskObservable(keyword: string) {
         this._searchString.next(keyword);
     }
 
-    get getSearchString() {
+    get getSearchTaskObservable() {
 
         return this._searchStringObservable;
     }
@@ -46,39 +40,21 @@ export class TasksService implements TasksServiceInterface {
     private _tasks: BehaviorSubject<SingleTask[]> = new BehaviorSubject([]);
     private _tasksObservable: Observable<SingleTask[]> = this._tasks.asObservable();
 
-    public updateTasks() {
+    public updateTasksObservable() {
         let currTasks: SingleTask[];
         this.getTasksAsync().subscribe(res => { currTasks = res; this._tasks.next(currTasks); }
         );
     }
 
-    get getTasks(): Observable<SingleTask[]> {
+    private getTasksAsync(): Observable<SingleTask[]> {
+        return this.http.get("/api/tasks").map(data => data.json());
+    }
+    get getTasksObservable(): Observable<SingleTask[]> {
         return this._tasksObservable;
     }
-
-
-    private _showAddTaskForm: BehaviorSubject<boolean> = new BehaviorSubject(false);
-    private _showAddTaskFormObservable: Observable<boolean> = this._showAddTaskForm.asObservable();
-
-    public changeVisibility() {
-
-        this._showAddTaskForm.next(!this._showAddTaskForm.value);
-    }
-
-    get showAddTaskForm() {
-        return this._showAddTaskFormObservable;
-    }
-
-    // Async get tasks from web api
-    getTasksAsync(): Observable<SingleTask[]> { 
-        return this.http.get("/api/tasks").map(data => data.json());
-
-    }
-
+    
     addTask(task: SingleTask): Observable<Response> {
-
         return this.http.post("/api/tasks", task);
-
     }
 
     deleteTask(taskId: number): Observable<Response> {
@@ -86,11 +62,8 @@ export class TasksService implements TasksServiceInterface {
         console.log("input parameter is " + taskId);
         return this.http.delete("/api/tasks/" + taskId);
     }
-
-
-    markDone(taskId: number): Observable<Response> {
+    
+    markTaskDone(taskId: number): Observable<Response> {
         return this.http.patch("/api/tasks/" + taskId, taskId);
     }
-
-
 }

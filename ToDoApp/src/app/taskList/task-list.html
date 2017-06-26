@@ -1,14 +1,6 @@
-﻿
-
-
-
-<div class="row">
+﻿<div class="row">
     <div class="col-md-12">
-
-        
-         
         <table class="table table-striped">
-
             <thead>
                 <tr>
                    <th></th>
@@ -20,7 +12,6 @@
                     <th>Edit</th>
                 </tr>
             </thead>
-           
             <tbody *ngFor="let task of currTask | filterLs:currString">
                 <tr>
                     <td *ngIf="task.done"><input type="checkbox" checked disabled /></td>
@@ -38,8 +29,8 @@
                     <td>
                         <button type="button" class="btn" routerLink="/edit"
                            [replaceUrl]="false"
-                           [queryParams]="{ id: task.id }" routerLinkActive="active" queryParamsHandling (click)="task.editMode = !task.editMode" [disabled]="task.done">
-                            <span class="glyphicon glyphicon-edit"  aria-hidden="true"></span>
+                           [queryParams]="{ id: task.id }" routerLinkActive="active" queryParamsHandling (click)="task.editMode = !task.editMode;"  [disabled]="task.done">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </button>
                     </td>
                 </tr>

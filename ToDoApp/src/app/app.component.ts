@@ -23,37 +23,8 @@ export class AppComponent implements OnInit  {
 
     ngOnInit() {
 
-      
-        
-     
-
-        //console.log(this.activatedRoute.snapshot.params['id']); 
-
-        //this.activatedRoute.params.switchMap((params: Params, index: number) => {
-        //    console.log(params); 
-        //    return params['id'];
-
-        //});
-                 
-
-        //let params: any = this.activatedRoute.snapshot.params;
-        //console.log(params.id); 
-
-        // subscribe to router event
-        //this.activatedRoute.params.subscribe((params: Params) => {
-
-           
-        //}); 
-        
     }
-    
-    
-
     callAddTask() {
-        
-        this.tasksService.changeVisibility();
-
+        this.tasksService.changeVisibilityOfAddTask();
     }
-    
-
 }

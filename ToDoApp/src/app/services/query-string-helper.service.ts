@@ -6,9 +6,7 @@ import { URLSearchParams } from '@angular/http';
 export class QueryStringHelperService {
 
     constructor(private activatedRoute: ActivatedRoute,
-        private router: Router) {
-
-    }
+        private router: Router) {}
 
     getQueryStringParams() {
      
@@ -41,5 +39,4 @@ export class QueryStringHelperService {
             relativeTo: this.activatedRoute
         });        
     }
-
 }
