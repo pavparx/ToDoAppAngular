@@ -24,7 +24,5 @@ export class AppComponent implements OnInit  {
     ngOnInit() {
 
     }
-    callAddTask() {
-        this.tasksService.changeVisibilityOfAddTask();
-    }
+   
 }

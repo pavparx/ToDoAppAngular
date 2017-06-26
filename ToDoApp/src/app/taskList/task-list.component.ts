@@ -27,11 +27,6 @@ export class TaskListComponent implements OnInit {
         this.tasksService.getSearchTaskObservable.subscribe(data => this.currString = data);
     }
 
-    //showEditTask() {
-    //    if (!this.tasksService.getVisibilityOfAddTask)
-    //    this.tasksService.changeVisibilityOfAddTask();
-    //}
-
     deleteTask(taskId: number) {
          
         if (window.confirm("Are you sure you want to delete this task?")) {

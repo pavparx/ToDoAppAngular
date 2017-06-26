@@ -1,4 +1,4 @@
-﻿import { Component, Input, Inject } from '@angular/core';
+﻿import { Component, Input, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SingleTask } from '../models/single-task.model';
 import { TasksServiceInterface } from '../interfaces/tasks-service.interface';
@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
     selector: 'tda-add-task',
     templateUrl: 'add-task.html'
 })
-export class AddTaskComponent {
+export class AddTaskComponent implements OnInit {
 
     @Input()
     task: SingleTask;
@@ -21,33 +21,46 @@ export class AddTaskComponent {
     alwaysShow: boolean;
 
     private currentTasks: SingleTask[];
-    private showId: boolean;
-    urlResults: any = {};
+    private showId: boolean=false;
+    
+    private urlResults: any = {};
 
     constructor(
         @Inject('TasksServiceInterface') private tasksService: TasksServiceInterface,
-        private queryStringHelperService: QueryStringHelperService) {
-        if (!this.task) { this.task = new SingleTask;}
-        this.tasksService.getTasksObservable.subscribe((res) => this.currentTasks = res);
-        this.tasksService.getVisibilityOfAddTask.subscribe((res) => { this.showId = res; });
-        this.urlResults = this.queryStringHelperService.getQueryStringParams();
+        private queryStringHelperService: QueryStringHelperService) { }
 
-        if (this.urlResults) {
-            if (!this.showId) { this.tasksService.changeVisibilityOfAddTask(); }
-            
-                for (var key in this.urlResults) {
-                    for (let taskItem of this.currentTasks) {
-                        if (taskItem.id === this.urlResults[key]) {
+
+    ngOnInit() {
+        //if (!this.task) { this.task = new SingleTask; }
+        this.tasksService.getTasksObservable.subscribe((res) => this.currentTasks = res);
+        console.log("currentTasks onInit :" + this.currentTasks);
+        this.tasksService.getVisibilityOfAddTask.subscribe((res) => { this.showId = res; });
+        console.log("showId on init :" + this.showId);
+        this.queryStringHelperService.subscribe((params: any) => {
+
+            for (var key in params) {
+                this.urlResults[key] = params[key];
+            }
+        });
+        console.log("urlResults onInit :" + this.urlResults);
+        if (this.urlResults.length>0) {
+            if (this.showId==false) { this.tasksService.changeVisibilityOfAddTask(); }
+
+            for (var key in this.urlResults) {
+                for (let taskItem of this.currentTasks) {
+                    console.log("current taskItem in currentTasks loop: " + taskItem);
+                    if (taskItem.id === this.urlResults[key]) {
                         this.task = taskItem;
+                        console.log("The task matched with the id in the url: " + this.task);
                         break;
                     }
                 }
             }
         } else {
             this.task = new SingleTask;
+            console.log("the new task if no task matches with the id :" + this.task);
         }
     }
-    
         addTask(task: SingleTask) {
             task.done = false;
             this.tasksService.addTask(task).subscribe(() => {
