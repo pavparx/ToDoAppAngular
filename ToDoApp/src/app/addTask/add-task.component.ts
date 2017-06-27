@@ -20,17 +20,20 @@ export class AddTaskComponent implements OnInit {
     @Input()
     alwaysShow: boolean;
 
+    private route: string;
     private currentTasks: SingleTask[];
     private showId: boolean=false;
     private urlResults: any = {};
 
     constructor(
         @Inject('TasksServiceInterface') private tasksService: TasksServiceInterface,
-        private queryStringHelperService: QueryStringHelperService) { }
+        private queryStringHelperService: QueryStringHelperService, location: Location) { }
 
 
     ngOnInit() { 
 
+        this.route = location.pathname;
+        
         if (!this.task) { this.task = new SingleTask(); }
 
         this.tasksService.getTasksObservable.subscribe((res) => {
@@ -38,6 +41,11 @@ export class AddTaskComponent implements OnInit {
         }); 
         
         this.tasksService.getVisibilityOfAddTask.subscribe((res) => { this.showId = res; });
+
+        if (this.route.includes("/src/add") || this.route.includes("/src/edit")) {
+            this.showId = true;
+        }
+        
         
         this.queryStringHelperService.subscribe((params: any) => {
 
