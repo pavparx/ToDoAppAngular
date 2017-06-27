@@ -33,41 +33,43 @@ export class AddTaskComponent implements OnInit {
     ngOnInit() { 
 
         this.route = location.pathname;
-        
-        if (!this.task) { this.task = new SingleTask(); }
-
-        this.tasksService.getTasksObservable.subscribe((res) => {
-            this.currentTasks = res
-        }); 
-        
         this.tasksService.getVisibilityOfAddTask.subscribe((res) => { this.showId = res; });
 
         if (this.route.includes("/src/add") || this.route.includes("/src/edit")) {
             this.showId = true;
         }
+
+        if (!this.task) { this.task = new SingleTask(); }
         
-        
-        this.queryStringHelperService.subscribe((params: any) => {
+        this.tasksService.getWebApiTasks().subscribe(res => {
+            this.currentTasks = res;
+            this.queryStringHelperService.subscribe((params: any) => {
 
-            for (var key in params) {
-                this.urlResults[key] = params[key];
-            } 
+                for (var key in params) {
+                    this.urlResults[key] = params[key];
+                }
 
-            if (Object.keys(this.urlResults).length > 0) {  
-                if (this.showId == false) { this.tasksService.changeVisibilityOfAddTask(); }
+                if (Object.keys(this.urlResults).length > 0) {
+                    if (this.showId == false) { this.tasksService.changeVisibilityOfAddTask(); }
 
-                let currentID = this.urlResults['id'];
-               
+                    let currentID = this.urlResults['id'];
+
                     for (let taskItem of this.currentTasks) {
                         if (taskItem.id === parseInt(currentID)) {
-                            this.task = taskItem;  
+                            this.task = taskItem;
                             break;
                         }
-                    }                
-            } else {
-                this.task = new SingleTask;
-            } 
+                    }
+                } else {
+                    this.task = new SingleTask;
+                }
+            });
         });
+
+        this.tasksService.getTasksObservable.subscribe((res) => {
+            this.currentTasks = res
+        }); 
+        
     }
 
         addTask(task: SingleTask) {
