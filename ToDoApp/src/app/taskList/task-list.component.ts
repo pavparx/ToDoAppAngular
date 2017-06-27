@@ -3,6 +3,7 @@ import { SingleTask } from '../models/single-task.model';
 import { FormsModule } from '@angular/forms';
 import { TasksServiceInterface } from '../interfaces/tasks-service.interface';
 import { TasksService } from '../services/tasks.service';
+import { Location } from '@angular/common';
 
 @Component({
     moduleId: module.id,
@@ -16,14 +17,13 @@ export class TaskListComponent implements OnInit {
     private currString: string;
     private currentTask: SingleTask;
     private alwaysShow: boolean;
+    
 
     constructor(@Inject('TasksServiceInterface') private tasksService: TasksServiceInterface) {}
     
-    ngOnInit() {   
-
-        this.tasksService.getTasksObservable.subscribe((res) => {
-            this.currTask = res;
-        });
+    ngOnInit() {
+        this.tasksService.getTasksObservable.subscribe(res => { this.currTask = res; });
+        this.tasksService.getWebApiTasks().subscribe(res => { this.currTask = res; });
         this.tasksService.getSearchTaskObservable.subscribe(data => this.currString = data);
     }
 

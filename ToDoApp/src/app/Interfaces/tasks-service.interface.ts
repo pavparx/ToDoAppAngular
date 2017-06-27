@@ -12,6 +12,7 @@ export interface TasksServiceInterface{
     deleteTask(taskId: number): Observable<Response>;
     markTaskDone(taskId: number): Observable<Response>;
     addTask(task: SingleTask): Observable<Response>;
+    getWebApiTasks(): Observable<SingleTask[]>;
 } 
 
  

@@ -52,7 +52,11 @@ export class TasksService implements TasksServiceInterface {
     get getTasksObservable(): Observable<SingleTask[]> {
         return this._tasksObservable;
     }
-    
+
+    getWebApiTasks(): Observable<SingleTask[]> {
+        return this.http.get("/api/tasks").map(data => data.json());
+    }
+
     addTask(task: SingleTask): Observable<Response> {
         return this.http.post("/api/tasks", task);
     }
