@@ -20,17 +20,18 @@ namespace ToDoApp.Web_API.Controllers
         [Route]
         public void AddTask(SingleTask task)
         {
-            
-            if (tasks.Count==0)
+
+            if (tasks.Count == 0)
             {
                 task.Id = 1;
                 tasks.Add(task);
-            }else
+            }
+            else
             {
                 task.Id = tasks.Count + 1;
                 tasks.Add(task);
             }
-            
+
 
 
         }
@@ -39,6 +40,7 @@ namespace ToDoApp.Web_API.Controllers
         [Route("{taskId:int}")]
         public void RemoveTask(int taskId)
         {
+            //TODO: Fix id numbering after removal
             foreach (SingleTask item in tasks)
             {
                 if (item.Id == taskId)
